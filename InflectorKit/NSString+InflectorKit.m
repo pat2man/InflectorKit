@@ -33,4 +33,12 @@
     return [[TTTStringInflector defaultInflector] pluralize:self];
 }
 
+- (NSString *)camelizedString {
+    return [[TTTStringInflector defaultInflector] camelize:self];
+}
+
+- (NSString *)underscoredString {
+    return [[TTTStringInflector defaultInflector] underscore:self];
+}
+
 @end

@@ -138,6 +138,49 @@
     [self.mutableUncountables addObject:word];
 }
 
+- (NSCharacterSet *)camelcaseDelimiters {
+    return [NSCharacterSet characterSetWithCharactersInString:@"_"];
+}
+
+- (NSString*)camelize:(NSString*)string {
+    NSArray *components = [string componentsSeparatedByCharactersInSet:[self camelcaseDelimiters]];
+    NSMutableString *output = [NSMutableString string];
+    for (NSString *component in components) {
+        [output appendString:component.capitalizedString];
+    }
+    return [output copy];
+}
+
+- (NSString*)underscore:(NSString*)string {
+    [self deCamelize:string withDelimeter:@"_"];
+}
+
+- (NSString*)deCamelize:(NSString*)string withDelimeter:(NSString*)delimeter {
+    NSCharacterSet *uppercase = [NSCharacterSet uppercaseLetterCharacterSet];
+    NSCharacterSet *lowercase = [NSCharacterSet lowercaseLetterCharacterSet];
+
+    NSMutableString *result = [NSMutableString string];
+    NSString *buffer = nil;
+
+    NSScanner *scanner = [NSScanner scannerWithString:string];
+    scanner.caseSensitive = YES;
+
+    while (scanner.isAtEnd == NO) {
+
+        if ([scanner scanCharactersFromSet:uppercase intoString:&buffer]) {
+            [result appendString:[buffer lowercaseString]];
+        }
+
+        if ([scanner scanCharactersFromSet:lowercase intoString:&buffer]) {
+            [result appendString:buffer];
+            if (!scanner.isAtEnd)
+                [result appendString:delimeter];
+        }
+    }
+
+    return [result copy];
+}
+
 @end
 
 #pragma mark -
@@ -154,7 +197,7 @@
                     replacement:(NSString *)replacement
 {
     TTTStringInflectionRule *rule = [[TTTStringInflectionRule alloc] init];
-    
+
     NSError *error = nil;
     rule.regularExpression = [NSRegularExpression regularExpressionWithPattern:pattern options:options error:&error];
     if (error) {

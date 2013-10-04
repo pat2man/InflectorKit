@@ -46,6 +46,13 @@
  */
 - (NSString *)pluralize:(NSString *)string;
 
+
+- (NSString*)underscore:(NSString*)string;
+
+
+- (NSString*)camelize:(NSString*)string;
+
+
 ///===================
 /// @name Adding Rules
 ///===================

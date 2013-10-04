@@ -37,4 +37,9 @@
  */
 - (NSString *)pluralizedString;
 
+
+- (NSString *)camelizedString;
+
+- (NSString *)underscoredString;
+
 @end
